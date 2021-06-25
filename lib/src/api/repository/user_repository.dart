@@ -1,16 +1,17 @@
-import '../../models/others/local_user_credential.dart';
+import 'package:flutter_boiler_plate/src/services/cache_service.dart';
+
 import '../../models/response/user/user_model.dart';
-import '../../utils/service_locator.dart';
 import 'base_api_service.dart';
 
 class UserRepository extends BaseApiService {
-  static const String _LOGIN_USER = "/api/user/login";
-  //If your path "/" at the end, it means that there's further route
+  UserRepository() : super(cacheService: StorageHttpCacheService());
+
+  static const String _GET_ALL_USER = "/api/user/all";
   static const String _GET_USER_INFO = "/api/user/info/";
 
   Future<UserResponse> fetchUserList({int page = 1, int count = 99999}) async {
     return onRequest(
-      path: "/api/user/all",
+      path: _GET_ALL_USER,
       query: {
         "page": page,
         "count": count,
@@ -21,8 +22,7 @@ class UserRepository extends BaseApiService {
     );
   }
 
-  Future<UserModel> fetchUserInfo() async {
-    String? userId = getIt<LocalUserCredential>().userId;
+  Future<UserModel> fetchUserInfo(String userId) async {
     return onRequest(
       path: _GET_USER_INFO + "$userId",
       onSuccess: (response) {

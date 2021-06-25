@@ -60,6 +60,7 @@ class _DummyPageState extends State<DummyPage> {
           return PullRefreshListViewBuilder.paginated(
             onRefresh: () => fetchData(true),
             itemCount: data.users!.length,
+            padding: EdgeInsets.zero,
             hasMoreData: currentPage <= totalPage!,
             itemBuilder: (context, index) {
               final user = data.users![index];

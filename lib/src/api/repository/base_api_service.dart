@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter_boiler_plate/src/services/cache_service.dart';
 
 import '../../constant/app_constant.dart';
 import '../../models/others/local_user_credential.dart';
@@ -11,10 +12,10 @@ import '../client/http_exception.dart';
 
 class BaseApiService {
   late final Dio dio;
-
-  BaseApiService({Dio? dio}) {
+  final IHttpCacheService? cacheService;
+  BaseApiService({Dio? dio, this.cacheService}) {
     if (dio == null) {
-      this.dio = dio ?? BaseHttpClient.dio;
+      this.dio = BaseHttpClient.dio;
     } else {
       this.dio = dio;
     }
@@ -47,6 +48,18 @@ class BaseApiService {
         httpOption.headers!['Authorization'] = "bearer $customToken";
       }
       httpOption.headers!.addAll(headers);
+      String requestUrl = "${dio.options.baseUrl}" + path + constructQuery(query);
+
+      if (cacheService != null && httpOption.method == HttpMethod.GET) {
+        httpLog("Load data from cache: $requestUrl");
+        Map<String, dynamic>? data = await cacheService!.loadCache(requestUrl);
+        if (data != null) {
+          httpLog("Cache has data");
+          final response = Response(data: data, requestOptions: RequestOptions(path: requestUrl));
+          return onSuccess(response);
+        }
+      }
+
       if (customDioClient != null) {
         response = await customDioClient.request(
           path,
@@ -66,6 +79,9 @@ class BaseApiService {
       ///This condition may be depend on Response and your API
       //return onSuccess(response);
       if (response.data['status'] == true) {
+        if (cacheService != null && httpOption.method == HttpMethod.GET) {
+          await cacheService!.saveCache(requestUrl, response.data);
+        }
         return onSuccess(response);
       } else {
         throw ServerResponseException(response.data['message']);
@@ -81,9 +97,19 @@ class BaseApiService {
 }
 
 String _onTypeError(dynamic exception) {
+  errorLog(exception);
   //Logic or syntax error on some condition
-  errorLog("Type Error :=> ${exception.toString()}\nStackTrace:  ${exception.stackTrace.toString()}");
+  //errorLog("Type Error :=> ${exception.toString()}\nStackTrace:  ${exception.stackTrace.toString()}");
   return ErrorMessage.UNEXPECTED_TYPE_ERROR;
+}
+
+String constructQuery(Map<String, dynamic>? query) {
+  if (query == null) return "";
+  String queryString = "?";
+  query.forEach((key, value) {
+    queryString += "$key=$value&";
+  });
+  return queryString;
 }
 
 DioErrorException _onDioError(DioError exception) {

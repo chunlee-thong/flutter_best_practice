@@ -50,7 +50,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/languages/
 
   fonts:
     - family: GoogleSans
