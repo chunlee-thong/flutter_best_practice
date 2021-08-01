@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sura_flutter/sura_flutter.dart';
 
-import '../../../constant/app_dimension.dart';
+import '../../constant/app_dimension.dart';
 import '../state_widgets/no_data_widget.dart';
 
 class PullRefreshListViewBuilder extends StatelessWidget {

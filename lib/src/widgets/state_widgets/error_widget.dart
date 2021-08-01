@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:sura_flutter/sura_flutter.dart';
 
-import '../../../constant/style_decoration.dart';
+import '../../constant/style_decoration.dart';
 import '../common/ellipsis_text.dart';
 import '../ui_helper.dart';
 
@@ -52,7 +52,7 @@ class OnErrorWidget extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 icon: Icon(
                   FlutterIcons.refresh_faw,
-                  color: context.primaryColor,
+                  color: Theme.of(context).textTheme.bodyText1!.color ?? Colors.white,
                 ),
               ),
           ],

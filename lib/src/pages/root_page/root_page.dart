@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/bottom_navigation_provider.dart';
+import '../../providers/bottom_navigation_provider.dart';
 import '../../pages/home/home_page.dart';
 import '../dummy/dummy_page.dart';
 import 'widgets/bottom_navigation.dart';

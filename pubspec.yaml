@@ -20,7 +20,8 @@ dependencies:
   cupertino_icons: ^1.0.3
   flutter_launcher_icons: ^0.9.0
   cached_network_image: ^3.0.0
-  sura_flutter: ^0.2.6+1
+  sura_flutter: ^0.3.1
+  sura_manager: ^0.0.5
 
   ##network
   dio: ^4.0.0

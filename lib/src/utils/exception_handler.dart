@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../ui/widgets/ui_helper.dart';
+import '../widgets/ui_helper.dart';
 import 'custom_exception.dart';
 
 ///a function that use globally for try catch the exception, so you can easily send a report or

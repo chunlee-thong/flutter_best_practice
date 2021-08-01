@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constant/app_config.dart';
-import '../../../providers/theme_provider.dart';
+import '../../constant/app_config.dart';
+import '../../providers/theme_provider.dart';
 import '../../widgets/ui_helper.dart';
 
 class HomePage extends StatefulWidget {

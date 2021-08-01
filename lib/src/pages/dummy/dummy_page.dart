@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sura_flutter/sura_flutter.dart';
+import 'package:flutter_boiler_plate/src/widgets/ui_helper.dart';
+import 'package:sura_manager/sura_manager.dart';
 
-import '../../../api/index.dart';
-import '../../../models/response/user/user_model.dart';
+import '../../api/index.dart';
+import '../../models/response/user/user_model.dart';
 import '../../widgets/common/pull_refresh_listview.dart';
 
 class DummyPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class DummyPage extends StatefulWidget {
 }
 
 class _DummyPageState extends State<DummyPage> {
-  FutureManager<UserResponse> userController = FutureManager();
+  FutureManager<UserResponse> userController = FutureManager(reloading: false);
   int currentPage = 1;
   int? totalPage = 10;
 
@@ -21,10 +22,15 @@ class _DummyPageState extends State<DummyPage> {
       currentPage = 1;
     }
     userController.asyncOperation(
-      () => userRepository.fetchUserList(
-        count: 10,
-        page: currentPage,
-      ),
+      () async {
+        await Future.delayed(Duration(seconds: 1));
+        var data = await userRepository.fetchUserList(
+          count: 10,
+          page: currentPage,
+        );
+
+        return data;
+      },
       onSuccess: (response) {
         if (userController.hasData) {
           response.users = [...userController.data!.users!, ...response.users!];
@@ -53,9 +59,18 @@ class _DummyPageState extends State<DummyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Fetch all users with pagination")),
+      appBar: UIHelper.CustomAppBar(
+        title: "Fetch all users with pagination",
+        actions: [
+          IconButton(
+            onPressed: userController.refresh,
+            icon: Icon(Icons.refresh),
+          ),
+        ],
+      ),
       body: FutureManagerBuilder<UserResponse>(
         futureManager: userController,
+        onRefreshing: const RefreshProgressIndicator(),
         ready: (context, UserResponse data) {
           return PullRefreshListViewBuilder.paginated(
             onRefresh: () => fetchData(true),
