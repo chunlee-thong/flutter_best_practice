@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boiler_plate/src/pages/dummy/dummy_json_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/bottom_navigation_provider.dart';
@@ -18,7 +19,7 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
   List<Widget> get pages => [
         HomePage(),
-        DummyPage(),
+        DummyJsonPage(),
         Container(),
         Container(),
       ];

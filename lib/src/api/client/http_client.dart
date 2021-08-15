@@ -13,8 +13,8 @@ class BaseHttpClient {
   static void init() {
     final BaseOptions options = BaseOptions(
       baseUrl: AppConfig.BASE_URL,
-      connectTimeout: 10000,
-      receiveTimeout: 10000,
+      connectTimeout: 20000,
+      receiveTimeout: 20000,
     );
     dio = Dio(options)..interceptors.add(defaultInterceptor);
   }
